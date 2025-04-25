@@ -2,9 +2,8 @@ import fileModel from "../model/FileModel.js";
 
 export const fileUploader = async (req, res) => {
   try {
-    const { filename, originalName } = req.body;
+    
 
-    // ✅ Ensure a file is uploaded
     if (!req.file) {
       return res.status(400).json({
         message: "No file uploaded",
@@ -13,10 +12,11 @@ export const fileUploader = async (req, res) => {
     }
 
     const file = req.file.path;
-    const user = req.user?._id; // Optional chaining in case `req.user` is undefined
+    const userId = req.userId; 
 
-    // ✅ Check if user is available
-    if (!user) {
+   
+    
+    if (!userId) {
       return res.status(401).json({
         message: "Unauthorized. User info not found.",
         status: false,
@@ -24,11 +24,13 @@ export const fileUploader = async (req, res) => {
     }
 
     const fileupload = await fileModel.create({
-      filename,
-      originalName,
+      filename:req.file.filename,
+      originalName:req.file.originalname,
       image: file,
-      uploadedBy: user,
+      uploadedBy: userId, 
     });
+
+   
 
     res.status(200).json({
       status: true,
@@ -36,6 +38,7 @@ export const fileUploader = async (req, res) => {
     });
 
   } catch (error) {
+    console.log(error, "file uploader error");
     return res.status(500).json({
       message: "File uploading error",
       error: error.message || error,
@@ -43,5 +46,6 @@ export const fileUploader = async (req, res) => {
     });
   }
 };
+
 
   

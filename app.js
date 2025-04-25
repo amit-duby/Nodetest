@@ -1,5 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
+dotenv.config();
 import DbConnect from "./config/Db.js";
 import user from "./routes/userRouter.js";
 import organiz from "./routes/organizationRouter.js"
