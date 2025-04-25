@@ -51,6 +51,7 @@ export const isAdmin = (req, res, next) => {
     }
     next();
   } catch (error) {
+    console.log(error,"admin error");
     return res.status(500).json({ message: "Server error in admin check", error: error.message });
   }
 };
